@@ -1,0 +1,142 @@
+<html>
+<head>
+<title>vec3.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #a9b7c6;}
+.s1 { color: #bbb529;}
+.s2 { color: #808080;}
+.s3 { color: #6a8759;}
+.s4 { color: #cc7832;}
+.s5 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+vec3.h</font>
+</center></td></tr></table>
+<pre>
+<span class="s1">#ifndef </span><span class="s0">VEC3_H</span>
+<span class="s1">#define </span><span class="s0">VEC3_H</span>
+<span class="s2">//==============================================================================================</span>
+<span class="s2">// Originally written in 2016 by Peter Shirley &lt;ptrshrl@gmail.com&gt;</span>
+<span class="s2">//</span>
+<span class="s2">// To the extent possible under law, the author(s) have dedicated all copyright and related and</span>
+<span class="s2">// neighboring rights to this software to the public domain worldwide. This software is</span>
+<span class="s2">// distributed without any warranty.</span>
+<span class="s2">//</span>
+<span class="s2">// You should have received a copy (see file COPYING.txt) of the CC0 Public Domain Dedication</span>
+<span class="s2">// along with this software. If not, see &lt;http://creativecommons.org/publicdomain/zero/1.0/&gt;.</span>
+<span class="s2">//==============================================================================================</span>
+
+<span class="s1">#include </span><span class="s3">&lt;cmath&gt;</span>
+<span class="s1">#include </span><span class="s3">&lt;iostream&gt;</span>
+
+<span class="s4">using </span><span class="s0">std::sqrt</span><span class="s4">;</span>
+<span class="s4">using </span><span class="s0">std::fabs</span><span class="s4">;</span>
+
+<span class="s4">class </span><span class="s0">vec3 {</span>
+<span class="s4">public</span><span class="s0">:</span>
+    <span class="s0">vec3() : e{</span><span class="s5">0</span><span class="s4">,</span><span class="s5">0</span><span class="s4">,</span><span class="s5">0</span><span class="s0">} {}</span>
+    <span class="s0">vec3(</span><span class="s4">double </span><span class="s0">e0</span><span class="s4">, double </span><span class="s0">e1</span><span class="s4">, double </span><span class="s0">e2) : e{e0</span><span class="s4">, </span><span class="s0">e1</span><span class="s4">, </span><span class="s0">e2} {}</span>
+
+    <span class="s4">double </span><span class="s0">x() </span><span class="s4">const </span><span class="s0">{ </span><span class="s4">return </span><span class="s0">e[</span><span class="s5">0</span><span class="s0">]</span><span class="s4">; </span><span class="s0">}</span>
+    <span class="s4">double </span><span class="s0">y() </span><span class="s4">const </span><span class="s0">{ </span><span class="s4">return </span><span class="s0">e[</span><span class="s5">1</span><span class="s0">]</span><span class="s4">; </span><span class="s0">}</span>
+    <span class="s4">double </span><span class="s0">z() </span><span class="s4">const </span><span class="s0">{ </span><span class="s4">return </span><span class="s0">e[</span><span class="s5">2</span><span class="s0">]</span><span class="s4">; </span><span class="s0">}</span>
+
+    <span class="s0">vec3 </span><span class="s4">operator</span><span class="s0">-() </span><span class="s4">const </span><span class="s0">{ </span><span class="s4">return </span><span class="s0">vec3(-e[</span><span class="s5">0</span><span class="s0">]</span><span class="s4">, </span><span class="s0">-e[</span><span class="s5">1</span><span class="s0">]</span><span class="s4">, </span><span class="s0">-e[</span><span class="s5">2</span><span class="s0">])</span><span class="s4">; </span><span class="s0">}</span>
+    <span class="s4">double operator</span><span class="s0">[](</span><span class="s4">int </span><span class="s0">i) </span><span class="s4">const </span><span class="s0">{ </span><span class="s4">return </span><span class="s0">e[i]</span><span class="s4">; </span><span class="s0">}</span>
+    <span class="s4">double</span><span class="s0">&amp; </span><span class="s4">operator</span><span class="s0">[](</span><span class="s4">int </span><span class="s0">i) { </span><span class="s4">return </span><span class="s0">e[i]</span><span class="s4">; </span><span class="s0">}</span>
+
+    <span class="s0">vec3&amp; </span><span class="s4">operator</span><span class="s0">+=(</span><span class="s4">const </span><span class="s0">vec3 &amp;v) {</span>
+        <span class="s0">e[</span><span class="s5">0</span><span class="s0">] += v.e[</span><span class="s5">0</span><span class="s0">]</span><span class="s4">;</span>
+        <span class="s0">e[</span><span class="s5">1</span><span class="s0">] += v.e[</span><span class="s5">1</span><span class="s0">]</span><span class="s4">;</span>
+        <span class="s0">e[</span><span class="s5">2</span><span class="s0">] += v.e[</span><span class="s5">2</span><span class="s0">]</span><span class="s4">;</span>
+        <span class="s4">return </span><span class="s0">*</span><span class="s4">this;</span>
+    <span class="s0">}</span>
+
+    <span class="s0">vec3&amp; </span><span class="s4">operator</span><span class="s0">*=(</span><span class="s4">const double </span><span class="s0">t) {</span>
+        <span class="s0">e[</span><span class="s5">0</span><span class="s0">] *= t</span><span class="s4">;</span>
+        <span class="s0">e[</span><span class="s5">1</span><span class="s0">] *= t</span><span class="s4">;</span>
+        <span class="s0">e[</span><span class="s5">2</span><span class="s0">] *= t</span><span class="s4">;</span>
+        <span class="s4">return </span><span class="s0">*</span><span class="s4">this;</span>
+    <span class="s0">}</span>
+
+    <span class="s0">vec3&amp; </span><span class="s4">operator</span><span class="s0">/=(</span><span class="s4">const double </span><span class="s0">t) {</span>
+        <span class="s4">return </span><span class="s0">*</span><span class="s4">this </span><span class="s0">*= </span><span class="s5">1</span><span class="s0">/t</span><span class="s4">;</span>
+    <span class="s0">}</span>
+
+    <span class="s4">double </span><span class="s0">length() </span><span class="s4">const </span><span class="s0">{</span>
+        <span class="s4">return </span><span class="s0">sqrt(length_squared())</span><span class="s4">;</span>
+    <span class="s0">}</span>
+
+    <span class="s4">double </span><span class="s0">length_squared() </span><span class="s4">const </span><span class="s0">{</span>
+        <span class="s4">return </span><span class="s0">e[</span><span class="s5">0</span><span class="s0">]*e[</span><span class="s5">0</span><span class="s0">] + e[</span><span class="s5">1</span><span class="s0">]*e[</span><span class="s5">1</span><span class="s0">] + e[</span><span class="s5">2</span><span class="s0">]*e[</span><span class="s5">2</span><span class="s0">]</span><span class="s4">;</span>
+    <span class="s0">}</span>
+
+    <span class="s4">bool </span><span class="s0">near_zero() </span><span class="s4">const </span><span class="s0">{</span>
+        <span class="s2">// Return true if the vector is close to zero in all dimensions.</span>
+        <span class="s4">const auto </span><span class="s0">s = </span><span class="s5">1e-8</span><span class="s4">;</span>
+        <span class="s4">return </span><span class="s0">(fabs(e[</span><span class="s5">0</span><span class="s0">]) &lt; s) &amp;&amp; (fabs(e[</span><span class="s5">1</span><span class="s0">]) &lt; s) &amp;&amp; (fabs(e[</span><span class="s5">2</span><span class="s0">]) &lt; s)</span><span class="s4">;</span>
+    <span class="s0">}</span>
+
+<span class="s4">public</span><span class="s0">:</span>
+    <span class="s4">double </span><span class="s0">e[</span><span class="s5">3</span><span class="s0">]</span><span class="s4">;</span>
+<span class="s0">}</span><span class="s4">;</span>
+
+
+<span class="s2">// Type aliases for vec3</span>
+<span class="s4">using </span><span class="s0">point3 = vec3</span><span class="s4">;   </span><span class="s2">// 3D point</span>
+<span class="s4">using </span><span class="s0">color = vec3</span><span class="s4">;    </span><span class="s2">// RGB color</span>
+
+
+<span class="s2">// vec3 Utility Functions</span>
+
+<span class="s4">inline </span><span class="s0">std::ostream&amp; </span><span class="s4">operator</span><span class="s0">&lt;&lt;(std::ostream &amp;out</span><span class="s4">, const </span><span class="s0">vec3 &amp;v) {</span>
+    <span class="s4">return </span><span class="s0">out &lt;&lt; v.e[</span><span class="s5">0</span><span class="s0">] &lt;&lt; </span><span class="s3">' ' </span><span class="s0">&lt;&lt; v.e[</span><span class="s5">1</span><span class="s0">] &lt;&lt; </span><span class="s3">' ' </span><span class="s0">&lt;&lt; v.e[</span><span class="s5">2</span><span class="s0">]</span><span class="s4">;</span>
+<span class="s0">}</span>
+
+<span class="s4">inline </span><span class="s0">vec3 </span><span class="s4">operator</span><span class="s0">+(</span><span class="s4">const </span><span class="s0">vec3 &amp;u</span><span class="s4">, const </span><span class="s0">vec3 &amp;v) {</span>
+    <span class="s4">return </span><span class="s0">vec3(u.e[</span><span class="s5">0</span><span class="s0">] + v.e[</span><span class="s5">0</span><span class="s0">]</span><span class="s4">, </span><span class="s0">u.e[</span><span class="s5">1</span><span class="s0">] + v.e[</span><span class="s5">1</span><span class="s0">]</span><span class="s4">, </span><span class="s0">u.e[</span><span class="s5">2</span><span class="s0">] + v.e[</span><span class="s5">2</span><span class="s0">])</span><span class="s4">;</span>
+<span class="s0">}</span>
+
+<span class="s4">inline </span><span class="s0">vec3 </span><span class="s4">operator</span><span class="s0">-(</span><span class="s4">const </span><span class="s0">vec3 &amp;u</span><span class="s4">, const </span><span class="s0">vec3 &amp;v) {</span>
+    <span class="s4">return </span><span class="s0">vec3(u.e[</span><span class="s5">0</span><span class="s0">] - v.e[</span><span class="s5">0</span><span class="s0">]</span><span class="s4">, </span><span class="s0">u.e[</span><span class="s5">1</span><span class="s0">] - v.e[</span><span class="s5">1</span><span class="s0">]</span><span class="s4">, </span><span class="s0">u.e[</span><span class="s5">2</span><span class="s0">] - v.e[</span><span class="s5">2</span><span class="s0">])</span><span class="s4">;</span>
+<span class="s0">}</span>
+
+<span class="s4">inline </span><span class="s0">vec3 </span><span class="s4">operator</span><span class="s0">*(</span><span class="s4">const </span><span class="s0">vec3 &amp;u</span><span class="s4">, const </span><span class="s0">vec3 &amp;v) {</span>
+    <span class="s4">return </span><span class="s0">vec3(u.e[</span><span class="s5">0</span><span class="s0">] * v.e[</span><span class="s5">0</span><span class="s0">]</span><span class="s4">, </span><span class="s0">u.e[</span><span class="s5">1</span><span class="s0">] * v.e[</span><span class="s5">1</span><span class="s0">]</span><span class="s4">, </span><span class="s0">u.e[</span><span class="s5">2</span><span class="s0">] * v.e[</span><span class="s5">2</span><span class="s0">])</span><span class="s4">;</span>
+<span class="s0">}</span>
+
+<span class="s4">inline </span><span class="s0">vec3 </span><span class="s4">operator</span><span class="s0">*(</span><span class="s4">double </span><span class="s0">t</span><span class="s4">, const </span><span class="s0">vec3 &amp;v) {</span>
+    <span class="s4">return </span><span class="s0">vec3(t*v.e[</span><span class="s5">0</span><span class="s0">]</span><span class="s4">, </span><span class="s0">t*v.e[</span><span class="s5">1</span><span class="s0">]</span><span class="s4">, </span><span class="s0">t*v.e[</span><span class="s5">2</span><span class="s0">])</span><span class="s4">;</span>
+<span class="s0">}</span>
+
+<span class="s4">inline </span><span class="s0">vec3 </span><span class="s4">operator</span><span class="s0">*(</span><span class="s4">const </span><span class="s0">vec3 &amp;v</span><span class="s4">, double </span><span class="s0">t) {</span>
+    <span class="s4">return </span><span class="s0">t * v</span><span class="s4">;</span>
+<span class="s0">}</span>
+
+<span class="s4">inline </span><span class="s0">vec3 </span><span class="s4">operator</span><span class="s0">/(vec3 v</span><span class="s4">, double </span><span class="s0">t) {</span>
+    <span class="s4">return </span><span class="s0">(</span><span class="s5">1</span><span class="s0">/t) * v</span><span class="s4">;</span>
+<span class="s0">}</span>
+
+<span class="s4">inline double </span><span class="s0">dot(</span><span class="s4">const </span><span class="s0">vec3 &amp;u</span><span class="s4">, const </span><span class="s0">vec3 &amp;v) {</span>
+    <span class="s4">return </span><span class="s0">u.e[</span><span class="s5">0</span><span class="s0">] * v.e[</span><span class="s5">0</span><span class="s0">]</span>
+           <span class="s0">+ u.e[</span><span class="s5">1</span><span class="s0">] * v.e[</span><span class="s5">1</span><span class="s0">]</span>
+           <span class="s0">+ u.e[</span><span class="s5">2</span><span class="s0">] * v.e[</span><span class="s5">2</span><span class="s0">]</span><span class="s4">;</span>
+<span class="s0">}</span>
+
+<span class="s4">inline </span><span class="s0">vec3 cross(</span><span class="s4">const </span><span class="s0">vec3 &amp;u</span><span class="s4">, const </span><span class="s0">vec3 &amp;v) {</span>
+    <span class="s4">return </span><span class="s0">vec3(u.e[</span><span class="s5">1</span><span class="s0">] * v.e[</span><span class="s5">2</span><span class="s0">] - u.e[</span><span class="s5">2</span><span class="s0">] * v.e[</span><span class="s5">1</span><span class="s0">]</span><span class="s4">,</span>
+                <span class="s0">u.e[</span><span class="s5">2</span><span class="s0">] * v.e[</span><span class="s5">0</span><span class="s0">] - u.e[</span><span class="s5">0</span><span class="s0">] * v.e[</span><span class="s5">2</span><span class="s0">]</span><span class="s4">,</span>
+                <span class="s0">u.e[</span><span class="s5">0</span><span class="s0">] * v.e[</span><span class="s5">1</span><span class="s0">] - u.e[</span><span class="s5">1</span><span class="s0">] * v.e[</span><span class="s5">0</span><span class="s0">])</span><span class="s4">;</span>
+<span class="s0">}</span>
+
+<span class="s4">inline </span><span class="s0">vec3 unit_vector(vec3 v) {</span>
+    <span class="s4">return </span><span class="s0">v / v.length()</span><span class="s4">;</span>
+<span class="s0">}</span>
+<span class="s1">#endif</span></pre>
+</body>
+</html>

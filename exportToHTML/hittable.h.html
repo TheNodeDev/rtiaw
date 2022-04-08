@@ -1,0 +1,44 @@
+<html>
+<head>
+<title>hittable.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #bbb529;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #cc7832;}
+.s4 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+hittable.h</font>
+</center></td></tr></table>
+<pre><span class="s0">#ifndef </span><span class="s1">HITTABLE_H</span>
+<span class="s0">#define </span><span class="s1">HITTABLE_H</span>
+
+<span class="s0">#include </span><span class="s2">&quot;ray.h&quot;</span>
+
+<span class="s3">struct </span><span class="s1">hit_record {</span>
+    <span class="s1">point3 p</span><span class="s3">;</span>
+    <span class="s1">vec3 normal</span><span class="s3">;</span>
+    <span class="s3">double </span><span class="s1">t</span><span class="s3">;</span>
+    <span class="s3">bool </span><span class="s1">front_face</span><span class="s3">;</span>
+
+    <span class="s3">inline void </span><span class="s1">set_face_normal(</span><span class="s3">const </span><span class="s1">ray&amp; r</span><span class="s3">, const </span><span class="s1">vec3&amp; outward_normal)</span>
+    <span class="s1">{</span>
+        <span class="s1">front_face = dot(r.direction()</span><span class="s3">, </span><span class="s1">outward_normal)</span><span class="s3">;</span>
+        <span class="s1">normal = front_face ? outward_normal :-outward_normal</span><span class="s3">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span><span class="s3">;</span>
+
+<span class="s3">class </span><span class="s1">hittable {</span>
+<span class="s3">public</span><span class="s1">:</span>
+    <span class="s3">virtual bool </span><span class="s1">hit(</span><span class="s3">const </span><span class="s1">ray&amp; t</span><span class="s3">, double </span><span class="s1">t_min</span><span class="s3">, double </span><span class="s1">t_max</span><span class="s3">, </span><span class="s1">hit_record&amp; rec) </span><span class="s3">const </span><span class="s1">= </span><span class="s4">0</span><span class="s3">;</span>
+<span class="s1">}</span><span class="s3">;</span>
+
+<span class="s0">#endif</span></pre>
+</body>
+</html>

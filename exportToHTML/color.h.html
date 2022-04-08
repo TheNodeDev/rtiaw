@@ -1,0 +1,36 @@
+<html>
+<head>
+<title>color.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #bbb529;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #cc7832;}
+.s4 { color: #808080;}
+.s5 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+color.h</font>
+</center></td></tr></table>
+<pre><span class="s0">#ifndef </span><span class="s1">COLOR_H</span>
+<span class="s0">#define </span><span class="s1">COLOR_H</span>
+
+<span class="s0">#include </span><span class="s2">&quot;vec3.h&quot;</span>
+
+<span class="s0">#include </span><span class="s2">&lt;iostream&gt;</span>
+
+<span class="s3">void </span><span class="s1">write_color(std::ostream &amp;out</span><span class="s3">, </span><span class="s1">color pixel_color) {</span>
+    <span class="s4">// Write the translated [0,255] value of each color component.</span>
+    <span class="s1">out &lt;&lt; </span><span class="s3">static_cast</span><span class="s1">&lt;</span><span class="s3">int</span><span class="s1">&gt;(</span><span class="s5">255.999 </span><span class="s1">* pixel_color.x()) &lt;&lt; </span><span class="s2">' '</span>
+        <span class="s1">&lt;&lt; </span><span class="s3">static_cast</span><span class="s1">&lt;</span><span class="s3">int</span><span class="s1">&gt;(</span><span class="s5">255.999 </span><span class="s1">* pixel_color.y()) &lt;&lt; </span><span class="s2">' '</span>
+        <span class="s1">&lt;&lt; </span><span class="s3">static_cast</span><span class="s1">&lt;</span><span class="s3">int</span><span class="s1">&gt;(</span><span class="s5">255.999 </span><span class="s1">* pixel_color.z()) &lt;&lt; </span><span class="s2">'</span><span class="s3">\n</span><span class="s2">'</span><span class="s3">;</span>
+<span class="s1">}</span>
+
+<span class="s0">#endif</span></pre>
+</body>
+</html>

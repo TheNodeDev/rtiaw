@@ -1,0 +1,66 @@
+<html>
+<head>
+<title>sphere.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #bbb529;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #cc7832;}
+.s4 { color: #6897bb;}
+.s5 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+sphere.h</font>
+</center></td></tr></table>
+<pre><span class="s0">#ifndef </span><span class="s1">SPHERE_H</span>
+<span class="s0">#define </span><span class="s1">SPHERE_H</span>
+
+<span class="s0">#include </span><span class="s2">&quot;../hittable.h&quot;</span>
+<span class="s0">#include </span><span class="s2">&quot;../vec3.h&quot;</span>
+
+<span class="s3">class </span><span class="s1">sphere : </span><span class="s3">public </span><span class="s1">hittable{</span>
+<span class="s3">public</span><span class="s1">:</span>
+    <span class="s1">sphere(){}</span>
+    <span class="s1">sphere(point3 cen</span><span class="s3">, double </span><span class="s1">r) : center(cen)</span><span class="s3">, </span><span class="s1">radius(r){}</span>
+
+    <span class="s3">virtual bool </span><span class="s1">hit(</span><span class="s3">const </span><span class="s1">ray&amp;r</span><span class="s3">, double </span><span class="s1">t_min</span><span class="s3">, double </span><span class="s1">t_max</span><span class="s3">, </span><span class="s1">hit_record&amp; rec) </span><span class="s3">const </span><span class="s1">override</span><span class="s3">;</span>
+
+<span class="s3">public</span><span class="s1">:</span>
+    <span class="s1">point3 center</span><span class="s3">;</span>
+    <span class="s3">double </span><span class="s1">radius</span><span class="s3">;</span>
+<span class="s1">}</span><span class="s3">;</span>
+
+<span class="s3">bool </span><span class="s1">sphere::hit(</span><span class="s3">const </span><span class="s1">ray&amp;r</span><span class="s3">, double </span><span class="s1">t_min</span><span class="s3">, double </span><span class="s1">t_max</span><span class="s3">, </span><span class="s1">hit_record&amp; rec) </span><span class="s3">const</span><span class="s1">{</span>
+    <span class="s1">vec3 oc = r.origin() - center</span><span class="s3">;</span>
+    <span class="s3">auto </span><span class="s1">a = r.direction().length_squared()</span><span class="s3">;</span>
+    <span class="s3">auto </span><span class="s1">half_b = dot(oc</span><span class="s3">, </span><span class="s1">r.direction())</span><span class="s3">;</span>
+    <span class="s3">auto </span><span class="s1">c = oc.length_squared() - radius*radius</span><span class="s3">;</span>
+
+    <span class="s3">auto </span><span class="s1">discriminant = half_b*half_b - a*c</span><span class="s3">;</span>
+    <span class="s3">if </span><span class="s1">(discriminant &lt; </span><span class="s4">0</span><span class="s1">) </span><span class="s3">return false;</span>
+    <span class="s3">auto </span><span class="s1">sqrtd = sqrt(discriminant)</span><span class="s3">;</span>
+
+    <span class="s5">// Find the nearest root that lies in the acceptable range.</span>
+    <span class="s3">auto </span><span class="s1">root = (-half_b - sqrtd) / a</span><span class="s3">;</span>
+    <span class="s3">if </span><span class="s1">(root &lt; t_min || t_max &lt; root) {</span>
+        <span class="s1">root = (-half_b + sqrtd) / a</span><span class="s3">;</span>
+        <span class="s3">if </span><span class="s1">(root &lt; t_min || t_max &lt; root)</span>
+            <span class="s3">return false;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">rec.t = root</span><span class="s3">;</span>
+    <span class="s1">rec.p = r.at(rec.t)</span><span class="s3">;</span>
+    <span class="s1">vec3 outward_normal = (rec.p - center) / radius</span><span class="s3">;</span>
+    <span class="s1">rec.set_face_normal(r</span><span class="s3">, </span><span class="s1">outward_normal)</span><span class="s3">;</span>
+
+    <span class="s3">return true;</span>
+<span class="s1">}</span>
+
+<span class="s0">#endif</span></pre>
+</body>
+</html>

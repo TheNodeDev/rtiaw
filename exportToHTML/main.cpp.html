@@ -1,0 +1,81 @@
+<html>
+<head>
+<title>main.cpp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #bbb529;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #cc7832;}
+.s4 { color: #6897bb;}
+.s5 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+main.cpp</font>
+</center></td></tr></table>
+<pre><span class="s0">#include </span><span class="s2">&lt;iostream&gt;</span>
+<span class="s0">#include </span><span class="s2">&lt;fstream&gt;</span>
+<span class="s0">#include </span><span class="s2">&lt;cmath&gt;</span>
+
+<span class="s0">#include </span><span class="s2">&quot;utils.h&quot;</span>
+<span class="s0">#include </span><span class="s2">&quot;color.h&quot;</span>
+<span class="s0">#include </span><span class="s2">&quot;hittable_list.h&quot;</span>
+<span class="s0">#include </span><span class="s2">&quot;camera.h&quot;</span>
+<span class="s0">#include </span><span class="s2">&quot;objects/sphere.h&quot;</span>
+
+<span class="s1">color ray_color(</span><span class="s3">const </span><span class="s1">ray&amp; r</span><span class="s3">, const </span><span class="s1">hittable&amp; world) {</span>
+    <span class="s1">hit_record rec</span><span class="s3">;</span>
+    <span class="s3">if </span><span class="s1">(world.hit(r</span><span class="s3">, </span><span class="s4">0</span><span class="s3">, </span><span class="s1">infinity</span><span class="s3">, </span><span class="s1">rec)) {</span>
+        <span class="s3">return </span><span class="s4">0.5 </span><span class="s1">* (rec.normal + color(</span><span class="s4">1</span><span class="s3">,</span><span class="s4">1</span><span class="s3">,</span><span class="s4">1</span><span class="s1">))</span><span class="s3">;</span>
+    <span class="s1">}</span>
+    <span class="s1">vec3 unit_direction = unit_vector(r.direction())</span><span class="s3">;</span>
+    <span class="s3">auto </span><span class="s1">t = </span><span class="s4">0.5</span><span class="s1">*(unit_direction.y() + </span><span class="s4">1.0</span><span class="s1">)</span><span class="s3">;</span>
+    <span class="s3">return </span><span class="s1">(</span><span class="s4">1.0</span><span class="s1">-t)*color(</span><span class="s4">1.0</span><span class="s3">, </span><span class="s4">1.0</span><span class="s3">, </span><span class="s4">1.0</span><span class="s1">) + t*color(</span><span class="s4">0.5</span><span class="s3">, </span><span class="s4">0.7</span><span class="s3">, </span><span class="s4">1.0</span><span class="s1">)</span><span class="s3">;</span>
+<span class="s1">}</span>
+
+<span class="s3">int </span><span class="s1">main() {</span>
+    <span class="s3">using namespace </span><span class="s1">std</span><span class="s3">;</span>
+<span class="s0">#pragma </span><span class="s1">region fileInfo</span>
+    <span class="s1">ofstream FileStream</span><span class="s3">;</span>
+    <span class="s1">FileStream.open(</span><span class="s2">&quot;./output.ppm&quot;</span><span class="s1">)</span><span class="s3">;</span>
+    <span class="s3">const auto </span><span class="s1">aspect_ratio = </span><span class="s4">16.0</span><span class="s1">/</span><span class="s4">9.0</span><span class="s3">;</span>
+    <span class="s3">const int </span><span class="s1">image_width = </span><span class="s4">1280</span><span class="s3">;</span>
+    <span class="s3">const int </span><span class="s1">image_height = </span><span class="s3">static_cast</span><span class="s1">&lt;</span><span class="s3">int</span><span class="s1">&gt;(image_width / aspect_ratio)</span><span class="s3">;</span>
+    <span class="s3">const int </span><span class="s1">samples_per_pixel = </span><span class="s4">100</span><span class="s3">;</span>
+    <span class="s1">FileStream &lt;&lt; </span><span class="s2">&quot;P3</span><span class="s3">\n</span><span class="s2">&quot; </span><span class="s1">&lt;&lt; image_width &lt;&lt; </span><span class="s2">' ' </span><span class="s1">&lt;&lt; image_height &lt;&lt; </span><span class="s2">&quot;</span><span class="s3">\n</span><span class="s2">255</span><span class="s3">\n</span><span class="s2">&quot;</span><span class="s3">;</span>
+<span class="s0">#pragma </span><span class="s1">endregion</span>
+<span class="s0">#pragma </span><span class="s1">region World</span>
+    <span class="s1">hittable_list world</span><span class="s3">;</span>
+    <span class="s1">world.add(make_shared&lt;sphere&gt;(point3(</span><span class="s4">0</span><span class="s3">,</span><span class="s4">0</span><span class="s3">,</span><span class="s1">-</span><span class="s4">1</span><span class="s1">)</span><span class="s3">, </span><span class="s4">0.5</span><span class="s1">))</span><span class="s3">;</span>
+    <span class="s1">world.add(make_shared&lt;sphere&gt;(point3(</span><span class="s4">0</span><span class="s3">,</span><span class="s1">-</span><span class="s4">100.5</span><span class="s3">,</span><span class="s4">0</span><span class="s1">)</span><span class="s3">, </span><span class="s4">100</span><span class="s1">))</span><span class="s3">;</span>
+<span class="s0">#pragma </span><span class="s1">endregion</span>
+<span class="s0">#pragma </span><span class="s1">region Camera</span>
+    <span class="s1">camera cam</span><span class="s3">;</span>
+<span class="s0">#pragma </span><span class="s1">endregion</span>
+<span class="s0">#pragma </span><span class="s1">region Render</span>
+    <span class="s3">for</span><span class="s1">(</span><span class="s3">int </span><span class="s1">y = image_height-</span><span class="s4">1</span><span class="s3">; </span><span class="s1">y &gt;= </span><span class="s4">0</span><span class="s3">; </span><span class="s1">--y){  </span><span class="s5">//j</span>
+        <span class="s1">cout &lt;&lt; </span><span class="s4">100</span><span class="s1">-round((</span><span class="s3">double</span><span class="s1">(y)/</span><span class="s3">double</span><span class="s1">(image_height))*</span><span class="s4">100</span><span class="s1">)  &lt;&lt; </span><span class="s2">'</span><span class="s3">\n</span><span class="s2">'</span><span class="s3">;</span>
+        <span class="s3">for</span><span class="s1">(</span><span class="s3">int </span><span class="s1">x = </span><span class="s4">0</span><span class="s3">; </span><span class="s1">x &lt; image_width</span><span class="s3">; </span><span class="s1">++x){  </span><span class="s5">//i</span>
+            <span class="s1">color pixel_color(</span><span class="s4">0</span><span class="s3">,</span><span class="s4">0</span><span class="s3">,</span><span class="s4">0</span><span class="s1">)</span><span class="s3">;</span>
+            <span class="s3">for</span><span class="s1">(</span><span class="s3">int </span><span class="s1">s = </span><span class="s4">0</span><span class="s3">; </span><span class="s1">s &lt; samples_per_pixel</span><span class="s3">; </span><span class="s1">++s)</span>
+            <span class="s1">{</span>
+                <span class="s3">auto </span><span class="s1">u = </span><span class="s3">double</span><span class="s1">(x + random_double()) / (image_width-</span><span class="s4">1</span><span class="s1">)</span><span class="s3">;</span>
+                <span class="s3">auto </span><span class="s1">v = </span><span class="s3">double</span><span class="s1">(y + random_double()) / (image_height-</span><span class="s4">1</span><span class="s1">)</span><span class="s3">;</span>
+                <span class="s1">ray r = cam.getray(u</span><span class="s3">,</span><span class="s1">v)</span><span class="s3">;</span>
+                <span class="s1">pixel_color += ray_color(r</span><span class="s3">, </span><span class="s1">world)</span><span class="s3">;</span>
+            <span class="s1">}</span>
+            <span class="s1">write_color(FileStream</span><span class="s3">, </span><span class="s1">pixel_color</span><span class="s3">, </span><span class="s1">samples_per_pixel)</span><span class="s3">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+<span class="s0">#pragma </span><span class="s1">endregion</span>
+<span class="s0">#pragma </span><span class="s1">region Disposal</span>
+    <span class="s1">FileStream.close()</span><span class="s3">;</span>
+<span class="s0">#pragma </span><span class="s1">endregion</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

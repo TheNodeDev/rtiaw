@@ -1,0 +1,61 @@
+<html>
+<head>
+<title>hittable_list.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #bbb529;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #cc7832;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+hittable_list.h</font>
+</center></td></tr></table>
+<pre><span class="s0">#ifndef </span><span class="s1">HITTABLE_LIST_H</span>
+<span class="s0">#define </span><span class="s1">HITTABLE_LIST_H</span>
+
+<span class="s0">#include </span><span class="s2">&quot;hittable.h&quot;</span>
+
+<span class="s0">#include </span><span class="s2">&lt;memory&gt;</span>
+<span class="s0">#include </span><span class="s2">&lt;vector&gt;</span>
+
+<span class="s3">using </span><span class="s1">std::shared_ptr</span><span class="s3">;</span>
+<span class="s3">using </span><span class="s1">std::make_shared</span><span class="s3">;</span>
+
+<span class="s3">class </span><span class="s1">hittable_list: </span><span class="s3">public </span><span class="s1">hittable{</span>
+<span class="s3">public</span><span class="s1">:</span>
+    <span class="s1">hittable_list(){}</span>
+    <span class="s1">hittable_list(shared_ptr&lt;hittable&gt; object){add(object)</span><span class="s3">;</span><span class="s1">}</span>
+
+    <span class="s3">void </span><span class="s1">clear(){objects.clear()</span><span class="s3">;</span><span class="s1">}</span>
+    <span class="s3">void </span><span class="s1">add(shared_ptr&lt;hittable&gt; object) { objects.push_back(object)</span><span class="s3">; </span><span class="s1">}</span>
+
+    <span class="s3">virtual bool </span><span class="s1">hit(</span><span class="s3">const </span><span class="s1">ray&amp;r</span><span class="s3">, double </span><span class="s1">t_min</span><span class="s3">, double </span><span class="s1">t_max</span><span class="s3">, </span><span class="s1">hit_record&amp; rec) </span><span class="s3">const </span><span class="s1">override</span><span class="s3">;</span>
+
+<span class="s3">public</span><span class="s1">:</span>
+    <span class="s1">std::vector&lt;shared_ptr&lt;hittable&gt;&gt; objects</span><span class="s3">;</span>
+<span class="s1">}</span><span class="s3">;</span>
+
+<span class="s3">bool </span><span class="s1">hittable_list::hit(</span><span class="s3">const </span><span class="s1">ray&amp; r</span><span class="s3">, double </span><span class="s1">t_min</span><span class="s3">, double </span><span class="s1">t_max</span><span class="s3">, </span><span class="s1">hit_record&amp; rec) </span><span class="s3">const </span><span class="s1">{</span>
+    <span class="s1">hit_record temp_rec</span><span class="s3">;</span>
+    <span class="s3">bool </span><span class="s1">hit_anything = </span><span class="s3">false;</span>
+    <span class="s3">auto </span><span class="s1">closest_so_far = t_max</span><span class="s3">;</span>
+
+    <span class="s3">for </span><span class="s1">(</span><span class="s3">const auto</span><span class="s1">&amp; object : objects) {</span>
+        <span class="s3">if </span><span class="s1">(object-&gt;hit(r</span><span class="s3">, </span><span class="s1">t_min</span><span class="s3">, </span><span class="s1">closest_so_far</span><span class="s3">, </span><span class="s1">temp_rec)) {</span>
+            <span class="s1">hit_anything = </span><span class="s3">true;</span>
+            <span class="s1">closest_so_far = temp_rec.t</span><span class="s3">;</span>
+            <span class="s1">rec = temp_rec</span><span class="s3">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s3">return </span><span class="s1">hit_anything</span><span class="s3">;</span>
+<span class="s1">}</span>
+
+<span class="s0">#endif</span></pre>
+</body>
+</html>
